@@ -1,19 +1,26 @@
 package business;
 
+import data.CartRepository;
 import java.util.Map;
-import java.util.HashMap;
 import java.util.Scanner;
 
+/**
+ * Business Layer - CartService
+ * Handles all cart operations and interacts with the data layer.
+ */
 public class CartService {
 
-    private Map<String, Integer> cart = new HashMap<>();
+    private CartRepository cartRepo; // Use the data layer
     private Scanner scanner;
 
     public CartService() {
+        this.cartRepo = new CartRepository(); // initialize repository
         this.scanner = new Scanner(System.in);
     }
 
-    // start() and handle methods stay the same, just replace cartService.* with this.*
+    /**
+     * Handles adding an item from user input.
+     */
     private void handleAddItem() {
         System.out.print("Enter item name: ");
         String item = scanner.nextLine();
@@ -21,12 +28,15 @@ public class CartService {
         System.out.print("Enter quantity: ");
         int qty = Integer.parseInt(scanner.nextLine());
 
-        String result = this.addToCart(item, qty);
+        String result = addToCart(item, qty);
         System.out.println(result);
     }
 
+    /**
+     * Handles viewing the cart.
+     */
     private void handleViewCart() {
-        Map<String, Integer> cart = this.viewCart();
+        Map<String, Integer> cart = viewCart();
 
         if (cart.isEmpty()) {
             System.out.println("Cart is empty.");
@@ -39,23 +49,41 @@ public class CartService {
         }
     }
 
+    /**
+     * Handles clearing the cart.
+     */
     private void handleClearCart() {
-        String result = this.clearCart();
+        String result = clearCart();
         System.out.println(result);
     }
 
-    // New methods
+    /**
+     * Adds an item to the cart using the repository.
+     */
     public String addToCart(String item, int qty) {
-        cart.put(item, cart.getOrDefault(item, 0) + qty);
+        cartRepo.addItem(item, qty);
         return qty + " x " + item + " added to cart.";
     }
 
+    /**
+     * Returns the current cart from the repository.
+     */
     public Map<String, Integer> viewCart() {
-        return cart;
+        return cartRepo.getCart();
     }
 
+    /**
+     * Clears the cart using the repository.
+     */
     public String clearCart() {
-        cart.clear();
+        cartRepo.clearCart();
         return "Cart cleared.";
+    }
+
+    /**
+     * Returns true if the cart is empty.
+     */
+    public boolean isCartEmpty() {
+        return cartRepo.isEmpty();
     }
 }

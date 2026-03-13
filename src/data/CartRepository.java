@@ -4,40 +4,39 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Data Layer - UserRepository
- * Simulates a database using an in-memory HashMap.
- * Responsible for storing and retrieving user records.
+ * Data Layer - CartRepository
+ * Simulates a database for storing cart items.
  */
 public class CartRepository {
 
-    // Simulated database: key = username, value = hashed password
-    private Map<String, String> database = new HashMap<>();
+    // key = item name, value = quantity
+    private Map<String, Integer> cartData = new HashMap<>();
 
     /**
-     * Saves a new user record to the simulated database.
-     * @param username The user's chosen username (email)
-     * @param passwordHash The hashed version of the user's password
+     * Adds or updates an item in the cart.
      */
-    public void saveUser(String username, String passwordHash) {
-        database.put(username, passwordHash);
-        System.out.println("[DB] User saved: " + username);
+    public void addItem(String item, int qty) {
+        cartData.put(item, cartData.getOrDefault(item, 0) + qty);
     }
 
     /**
-     * Finds a user by their username.
-     * @param username The username to search for
-     * @return The stored password hash, or null if not found
+     * Returns a copy of the current cart.
      */
-    public String findByUsername(String username) {
-        return database.get(username);
+    public Map<String, Integer> getCart() {
+        return new HashMap<>(cartData);
     }
 
     /**
-     * Checks whether a username already exists in the database.
-     * @param username The username to check
-     * @return true if the user exists, false otherwise
+     * Clears all items from the cart.
      */
-    public boolean userExists(String username) {
-        return database.containsKey(username);
+    public void clearCart() {
+        cartData.clear();
+    }
+
+    /**
+     * Checks if the cart is empty.
+     */
+    public boolean isEmpty() {
+        return cartData.isEmpty();
     }
 }
