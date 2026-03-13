@@ -8,7 +8,7 @@ import java.util.Map;
  * Simulates a database using an in-memory HashMap.
  * Responsible for storing and retrieving user records.
  */
-public class UserRepository {
+public class CartRepository {
 
     // Simulated database: key = username, value = hashed password
     private Map<String, String> database = new HashMap<>();
