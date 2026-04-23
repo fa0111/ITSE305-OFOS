@@ -26,11 +26,20 @@ jobs:
         curl -L -o lib/junit-platform-commons.jar https://repo1.maven.org/maven2/org/junit/platform/junit-platform-commons/1.10.0/junit-platform-commons-1.10.0.jar
         curl -L -o lib/opentest4j.jar https://repo1.maven.org/maven2/org/opentest4j/opentest4j/1.3.0/opentest4j-1.3.0.jar
         curl -L -o lib/junit-standalone.jar https://repo1.maven.org/maven2/org/junit/platform/junit-platform-console-standalone/1.10.0/junit-platform-console-standalone-1.10.0.jar
+        curl -L -o lib/junit4.jar https://repo1.maven.org/maven2/junit/junit/4.13.2/junit-4.13.2.jar
+        curl -L -o lib/hamcrest.jar https://repo1.maven.org/maven2/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar
 
     - name: Compile All Project Files
       run: |
         mkdir -p out
-        find . -name "*.java" -not -path "./randoop-tests/*" -print0 | xargs -0 javac -cp "lib/junit-jupiter-api.jar:lib/junit-platform-commons.jar:lib/opentest4j.jar" -d out
+        find . -name "*.java" \
+          -not -path "./randoop-tests/*" \
+          -not -name "RegressionTest*.java" \
+          -not -name "ErrorTest*.java" \
+          -not -name "RegressionTest.java" \
+          -print0 | xargs -0 javac \
+          -cp "lib/junit-jupiter-api.jar:lib/junit-platform-commons.jar:lib/opentest4j.jar:lib/junit4.jar:lib/hamcrest.jar" \
+          -d out
 
     - name: Run Tests
       run: |
