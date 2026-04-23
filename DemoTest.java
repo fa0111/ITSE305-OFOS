@@ -5,11 +5,11 @@ public class DemoTest {
 
     @Test
     public void testAddition() {
-        assertEquals(4, 2 + 2);
+        assertEquals(5, 2 + 2); // ← intentionally wrong, 2+2 is not 5
     }
 
     @Test
     public void testString() {
-        assertEquals("hello", "hello");
+        assertEquals("hello", "world"); // ← intentionally wrong
     }
 }
