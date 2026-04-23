@@ -21,6 +21,5 @@ jobs:
     - name: Compile All Project Files
       run: |
         mkdir -p out
-        # This finds every .java file in every folder and tries to compile them
-        find . -name "*.java" > sources.txt
-        javac -d out @sources.txt
+        # This version handles spaces in folder names correctly
+        find . -name "*.java" -print0 | xargs -0 javac -d out
