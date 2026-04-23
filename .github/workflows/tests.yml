@@ -1,0 +1,26 @@
+name: Java CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+
+    - name: Compile All Project Files
+      run: |
+        mkdir -p out
+        # This finds every .java file in every folder and tries to compile them
+        find . -name "*.java" > sources.txt
+        javac -d out @sources.txt
