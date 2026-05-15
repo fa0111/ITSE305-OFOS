@@ -34,6 +34,10 @@ public AuthService(UserRepository userRepository) {
         if (username == null || username.trim().isEmpty()) {
             return "ERROR: Username cannot be empty.";
         }
+        //Validate:username must be a valid email format 
+        if (!username.contains("@") || !username.contains(".")) {
+    return "ERROR: Username must be a valid email address.";
+}
 
         // Validate: password must be at least 6 characters
         if (password == null || password.length() < 6) {
