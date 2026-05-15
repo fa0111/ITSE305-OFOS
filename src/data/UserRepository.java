@@ -11,8 +11,8 @@ import java.util.Map;
  */
 public class UserRepository {
 
-    // Simulated database: key = username, value = hashed password
-    private Map<String, String> database = new HashMap<>();
+    // Final database field: prevents accidental reassignment
+   private final Map<String, String> database = new HashMap<>();
 
     /**
      * Saves a new user record to the simulated database.
