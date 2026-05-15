@@ -13,12 +13,13 @@ public class AuthService {
     // Dependency on the data layer
     private UserRepository userRepository;
 
-    /**
-     * Constructor - injects the UserRepository dependency.
-     */
-    public AuthService() {
-        this.userRepository = new UserRepository();
-    }
+   /**
+ * Constructor - accepts UserRepository as a parameter for dependency injection.
+ * This improves testability and decouples the business layer from the data layer.
+ */
+public AuthService(UserRepository userRepository) {
+    this.userRepository = userRepository;
+}
 
     /**
      * Registers a new user after validating input and checking for duplicates.
