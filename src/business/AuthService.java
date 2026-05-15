@@ -102,6 +102,6 @@ public AuthService(UserRepository userRepository) {
      * @return A simulated hash string
      */
     private String hashPassword(String password) {
-        return "HASH_" + password.hashCode();
+       return "HASH_" + Integer.toHexString(password.hashCode());
     }
 }
