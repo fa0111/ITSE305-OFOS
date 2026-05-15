@@ -22,36 +22,75 @@ jobs:
     - name: Download JUnit JARs
       run: |
         mkdir -p lib
-        curl -L -o lib/junit-jupyter-api.jar https://repo1.maven.org/maven2/org/junit/jupiter/junit-jupiter-api/5.10.0/junit-jupiter-api-5.10.0.jar
+        curl -L -o lib/junit-jupiter-api.jar https://repo1.maven.org/maven2/org/junit/jupiter/junit-jupiter-api/5.10.0/junit-jupiter-api-5.10.0.jar
         curl -L -o lib/junit-platform-commons.jar https://repo1.maven.org/maven2/org/junit/platform/junit-platform-commons/1.10.0/junit-platform-commons-1.10.0.jar
         curl -L -o lib/opentest4j.jar https://repo1.maven.org/maven2/org/opentest4j/opentest4j/1.3.0/opentest4j-1.3.0.jar
         curl -L -o lib/junit-standalone.jar https://repo1.maven.org/maven2/org/junit/platform/junit-platform-console-standalone/1.10.0/junit-platform-console-standalone-1.10.0.jar
         curl -L -o lib/junit4.jar https://repo1.maven.org/maven2/junit/junit/4.13.2/junit-4.13.2.jar
         curl -L -o lib/hamcrest.jar https://repo1.maven.org/maven2/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar
+        curl -L -o lib/junit-vintage.jar https://repo1.maven.org/maven2/org/junit/vintage/junit-vintage-engine/5.10.0/junit-vintage-engine-5.10.0.jar
+        curl -L -o lib/junit-platform-engine.jar https://repo1.maven.org/maven2/org/junit/platform/junit-platform-engine/1.10.0/junit-platform-engine-1.10.0.jar
+        curl -L -o lib/junit-platform-launcher.jar https://repo1.maven.org/maven2/org/junit/platform/junit-platform-launcher/1.10.0/junit-platform-launcher-1.10.0.jar
 
-    - name: Compile Bahaa UC03
+    - name: Compile and Test Bahaa UC03
       run: |
-        mkdir -p out
-        find ./Bahaa-UC03 -name "*.java" -not -name "RegressionTest*.java" -not -name "ErrorTest*.java" -print0 | xargs -0 javac -cp "lib/junit-jupyter-api.jar:lib/junit-platform-commons.jar:lib/opentest4j.jar" -d out || true
-
-    - name: Compile Fatima UC01
-      run: |
-        find ./Fatima-UC01 -name "*.java" -not -name "RegressionTest*.java" -not -name "ErrorTest*.java" -print0 | xargs -0 javac -cp "lib/junit-jupyter-api.jar:lib/junit-platform-commons.jar:lib/opentest4j.jar:lib/junit4.jar:lib/hamcrest.jar" -d out || true
-
-    - name: Compile Khalid UC02
-      run: |
-        find ./Khalid-UC02 -name "*.java" -not -name "RegressionTest*.java" -not -name "ErrorTest*.java" -print0 | xargs -0 javac -cp "lib/junit-jupyter-api.jar:lib/junit-platform-commons.jar:lib/opentest4j.jar:lib/junit4.jar:lib/hamcrest.jar" -d out || true
-
-    - name: Compile Ali UC04
-      run: |
-        find ./Ali-UC04 -name "*.java" -not -name "RegressionTest*.java" -not -name "ErrorTest*.java" -print0 | xargs -0 javac -cp "lib/junit-jupyter-api.jar:lib/junit-platform-commons.jar:lib/opentest4j.jar:lib/junit4.jar:lib/hamcrest.jar" -d out || true
-
-    - name: Compile Demo Test
-      run: |
-        find . -name "DemoTest.java" -print0 | xargs -0 javac -cp "lib/junit-jupyter-api.jar:lib/junit-platform-commons.jar:lib/opentest4j.jar" -d out || true
-
-    - name: Run Tests
-      run: |
+        mkdir -p out/bahaa
+        find ./Bahaa-UC03 -name "*.java" \
+          -not -name "RegressionTest*.java" \
+          -not -name "ErrorTest*.java" \
+          -print0 | xargs -0 javac \
+          -cp "lib/junit-jupiter-api.jar:lib/junit-platform-commons.jar:lib/opentest4j.jar" \
+          -d out/bahaa || true
         java -jar lib/junit-standalone.jar \
-          -cp "out:lib/junit-jupyter-api.jar:lib/junit-platform-commons.jar:lib/opentest4j.jar:lib/junit4.jar:lib/hamcrest.jar" \
-          --scan-classpath
+          -cp "out/bahaa:lib/junit-jupiter-api.jar:lib/junit-platform-commons.jar:lib/opentest4j.jar" \
+          --scan-classpath || true
+
+    - name: Compile and Test Fatima UC01
+      run: |
+        mkdir -p out/fatima
+        find ./Fatima-UC01 -name "*.java" \
+          -not -name "RegressionTest*.java" \
+          -not -name "ErrorTest*.java" \
+          -print0 | xargs -0 javac \
+          -cp "lib/junit-jupiter-api.jar:lib/junit-platform-commons.jar:lib/opentest4j.jar:lib/junit4.jar:lib/hamcrest.jar" \
+          -d out/fatima || true
+        java -jar lib/junit-standalone.jar \
+          -cp "out/fatima:lib/junit-jupiter-api.jar:lib/junit-platform-commons.jar:lib/opentest4j.jar:lib/junit4.jar:lib/hamcrest.jar:lib/junit-vintage.jar:lib/junit-platform-engine.jar:lib/junit-platform-launcher.jar" \
+          --scan-classpath || true
+
+    - name: Compile and Test Khalid UC02
+      run: |
+        mkdir -p out/khalid
+        find "./Khalid-UC02" -name "*.java" \
+          -not -name "RegressionTest*.java" \
+          -not -name "ErrorTest*.java" \
+          -print0 | xargs -0 javac \
+          -cp "lib/junit4.jar:lib/hamcrest.jar" \
+          -d out/khalid || true
+        java -jar lib/junit-standalone.jar \
+          -cp "out/khalid:lib/junit4.jar:lib/hamcrest.jar:lib/junit-vintage.jar:lib/junit-platform-engine.jar:lib/junit-platform-launcher.jar:lib/junit-platform-commons.jar:lib/opentest4j.jar" \
+          --scan-classpath || true
+
+    - name: Compile and Test Ali UC04
+      run: |
+        mkdir -p out/ali
+        find ./Ali-UC04 -name "*.java" \
+          -not -name "RegressionTest*.java" \
+          -not -name "ErrorTest*.java" \
+          -print0 | xargs -0 javac \
+          -cp "lib/junit-jupiter-api.jar:lib/junit-platform-commons.jar:lib/opentest4j.jar" \
+          -d out/ali || true
+        java -jar lib/junit-standalone.jar \
+          -cp "out/ali:lib/junit-jupiter-api.jar:lib/junit-platform-commons.jar:lib/opentest4j.jar" \
+          --scan-classpath || true
+
+    - name: Compile and Test Demo
+      run: |
+        mkdir -p out/demo
+        find . -name "DemoTest.java" \
+          -print0 | xargs -0 javac \
+          -cp "lib/junit-jupiter-api.jar:lib/junit-platform-commons.jar:lib/opentest4j.jar" \
+          -d out/demo || true
+        java -jar lib/junit-standalone.jar \
+          -cp "out/demo:lib/junit-jupiter-api.jar:lib/junit-platform-commons.jar:lib/opentest4j.jar" \
+          --scan-classpath || true
