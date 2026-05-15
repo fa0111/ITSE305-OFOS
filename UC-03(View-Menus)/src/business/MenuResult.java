@@ -1,3 +1,4 @@
+//MenuResult.java
 package business;
 
 import data.Menu;
