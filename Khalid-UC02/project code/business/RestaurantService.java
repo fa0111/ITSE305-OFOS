@@ -8,8 +8,10 @@ package com.ofos.business;
 
 import com.ofos.data.RestaurantRepository;
 import com.ofos.model.Restaurant;
+
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class RestaurantService {
 
@@ -20,9 +22,10 @@ public class RestaurantService {
     }
 
     public List<Restaurant> browseOpenRestaurants() {
-        List<Restaurant> all = restaurantRepository.findAll();
-        all.removeIf(r -> !r.isOpen());
-        return all;
+        return restaurantRepository.findAll()
+                .stream()
+                .filter(Restaurant::isOpen)
+                .collect(Collectors.toList());
     }
 
     public List<Restaurant> searchRestaurants(String keyword) {
@@ -36,10 +39,13 @@ public class RestaurantService {
         if (restaurantId == null || restaurantId.trim().isEmpty()) {
             throw new IllegalArgumentException("Restaurant ID cannot be empty.");
         }
+
         Optional<Restaurant> found = restaurantRepository.findById(restaurantId.trim());
+
         if (found.isEmpty()) {
             throw new RuntimeException("No restaurant found with ID: " + restaurantId);
         }
+
         return found.get();
     }
 }
