@@ -86,7 +86,10 @@ public class MenuService {
                     "All items on this restaurant's menu are currently out of stock. " +
                     "Please check back later.");
         }
-
+        
+        // Add log line here for successful retrieval
+        System.out.println("[Service] Menu retrieved for: " + restaurantId);
+        
         // Success: return the menu with available items to the presentation layer
         return MenuResult.success(menu);
     }
