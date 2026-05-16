@@ -67,6 +67,11 @@ public class MenuController {
      */
     public void viewMenu(String restaurantId, String restaurantName) {
 
+        // Validate the restaurant name is not null nor empty
+        if (restaurantName == null || restaurantName.trim().isEmpty()) {
+        restaurantName = "Unknown Restaurant";
+        }
+        printSectionHeader("Viewing Menu: " + restaurantName);
         // Display the page header / restaurant banner
         printSectionHeader("Viewing Menu: " + restaurantName);
 
