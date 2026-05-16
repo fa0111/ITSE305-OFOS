@@ -29,21 +29,28 @@ public class RestaurantService {
     }
 
     public List<Restaurant> searchRestaurants(String keyword) {
+
         if (keyword == null || keyword.trim().isEmpty()) {
-            throw new IllegalArgumentException("Search keyword cannot be empty.");
+            throw new IllegalArgumentException(
+                    "Search keyword cannot be empty.");
         }
+
         return restaurantRepository.searchByKeyword(keyword.trim());
     }
 
     public Restaurant getRestaurantById(String restaurantId) {
+
         if (restaurantId == null || restaurantId.trim().isEmpty()) {
-            throw new IllegalArgumentException("Restaurant ID cannot be empty.");
+            throw new IllegalArgumentException(
+                    "Restaurant ID cannot be empty.");
         }
 
-        Optional<Restaurant> found = restaurantRepository.findById(restaurantId.trim());
+        Optional<Restaurant> found =
+                restaurantRepository.findById(restaurantId.trim());
 
         if (found.isEmpty()) {
-            throw new RuntimeException("No restaurant found with ID: " + restaurantId);
+            throw new RestaurantNotFoundException(
+                    "No restaurant found with ID: " + restaurantId);
         }
 
         return found.get();
