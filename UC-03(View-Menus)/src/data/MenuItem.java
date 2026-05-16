@@ -22,22 +22,22 @@ package data;
 public class MenuItem {
 
     /** Unique identifier for this menu item (UUID as String) */
-    private String itemId;
+    private final String itemId;
 
     /** The ID of the menu this item belongs to */
-    private String menuId;
+    private final String menuId;
 
     /** Display name of the food item (e.g., "Pepperoni Pizza") */
-    private String name;
+    private final String name;
 
     /** Short description of the item (ingredients, preparation style, etc.) */
-    private String description;
+    private final String description;
 
     /** Price of the item in BHD (Bahraini Dinar) */
-    private double price;
+    private final double price;
 
     /** How many units are currently available; 0 means out of stock */
-    private int availableQuantity;
+    private final int availableQuantity;
 
     /**
      * Constructs a fully-populated MenuItem object.
